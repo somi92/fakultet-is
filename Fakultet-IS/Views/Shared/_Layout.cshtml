@@ -12,17 +12,21 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+                    <p class="site-title">@Html.ActionLink("Fakultet-IS", "Index", "Home")</p>
+                    <img src="Images/logo-academia.png" width="56" height="56" style="border: none;" />
+                    <img src="Images/diploma.png" width="56" height="56" style="border: none;" />
+                    <img src="Images/feather.png" width="56" height="56" style="border: none;" />
                 </div>
                 <div class="float-right">
-                    <section id="login">
+                    @*<section id="login">
                         @Html.Partial("_LoginPartial")
-                    </section>
+                    </section>*@
                     <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <ul id="menu" style="border: none 0px; margin-top: 50px;">
+                            <li>@Html.ActionLink("Pocetna", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Evidencija studenata", "Index", "Students")</li>
+                            <li>@Html.ActionLink("Evidencija ispita", "Index", "Ispits")</li>
+                            <li>@Html.ActionLink("Evidencija prijava", "Index", "Prijavas")</li>
                         </ul>
                     </nav>
                 </div>
