@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Fakultet_IS.Models;
+using PagedList;
 
 namespace Fakultet_IS.Controllers
 {
@@ -15,9 +16,9 @@ namespace Fakultet_IS.Controllers
         private FakultetEntities db = new FakultetEntities();
 
         // GET: Ispits
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, int? page)
         {
-
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.IDSortParm = sortOrder == "ID" ? "id_desc" : "ID";
             var ispits = from s in db.Ispits
@@ -39,7 +40,9 @@ namespace Fakultet_IS.Controllers
                     break;
             }
 
-            return View(ispits.ToList());
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(ispits.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Ispits/Details/5
