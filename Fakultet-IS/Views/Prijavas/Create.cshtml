@@ -4,7 +4,7 @@
     ViewBag.Title = "Kreiraj prijavu";
 }
 
-<h2>Prijava</h2>
+<h2>Kreiraj prijavu</h2>
 
 
 @using (Html.BeginForm()) 
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Kreiraj prijavu</h4>
+        <h4>Prijava</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

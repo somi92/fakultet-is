@@ -15,9 +15,45 @@ namespace Fakultet_IS.Controllers
         private FakultetEntities db = new FakultetEntities();
 
         // GET: Prijavas
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string search)
         {
-            var prijavas = db.Prijavas.Include(p => p.Ispits).Include(p => p.Students);
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.BISortParm = sortOrder == "BI" ? "bi_desc" : "BI";
+            ViewBag.SubjectSortParm = sortOrder == "subj" ? "subj_desc" : "subj";
+
+            var prijavas = from s in db.Prijavas.Include(p => p.Ispits).Include(p => p.Students)
+                               select s;
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                prijavas = prijavas.Where(s => s.Students.Prezime.Contains(search)
+                                       || s.Students.Ime.Contains(search)
+                                       || s.BI.Contains(search)
+                                       || s.Ispits.Naziv.Contains(search));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    prijavas = prijavas.OrderByDescending(s => s.Students.Prezime);
+                    break;
+                case "BI":
+                    prijavas = prijavas.OrderBy(s => s.BI);
+                    break;
+                case "bi_desc":
+                    prijavas = prijavas.OrderByDescending(s => s.BI);
+                    break;
+                case "subj":
+                    prijavas = prijavas.OrderBy(s => s.Ispits.Naziv);
+                    break;
+                case "subj_desc":
+                    prijavas = prijavas.OrderByDescending(s => s.Ispits.Naziv);
+                    break;
+                default:
+                    prijavas = prijavas.OrderBy(s => s.Students.Prezime);
+                    break;
+            }
+
             return View(prijavas.ToList());
         }
 

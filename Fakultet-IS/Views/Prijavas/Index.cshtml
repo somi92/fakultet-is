@@ -1,27 +1,36 @@
 ﻿@model IEnumerable<Fakultet_IS.Models.Prijavas>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Evidencija prijava";
 }
 
-<h2>Index</h2>
+<h2>Evidencija prijava</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Kreiraj novu prijavu", "Create")
 </p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Pretrazi po broju indeksa, imenu/prezimenu, nazivu predmeta: @Html.TextBox("Search")
+        <input type="submit" value="Pronadji" />
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
             @*@Html.DisplayNameFor(model => model.Ispits.Naziv)*@
-            Naziv predmeta
+            @Html.ActionLink("Naziv ispita", "Index", new { sortOrder = ViewBag.SubjectSortParm })
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.Students.BI)*@
-            Broj indeksa
+            @Html.ActionLink("BI", "Index", new { sortOrder = ViewBag.BISortParm })
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.Students.Ime)*@
-            Ime i prezime
+            @Html.ActionLink("Ime i prezime", "Index", new { sortOrder = ViewBag.NameSortParm })
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.Ocena)*@
@@ -46,7 +55,7 @@
             @Html.DisplayFor(modelItem => item.Ocena)
         </td>
         <td>
-            @Html.ActionLink("Promeni", "Edit", new { bi = item.Students.BI, ispit = item.Ispits.IspitID }) |
+            @Html.ActionLink("Azuriraj", "Edit", new { bi = item.Students.BI, ispit = item.Ispits.IspitID }) |
             @Html.ActionLink("Detalji", "Details", new { bi = item.Students.BI, ispit = item.Ispits.IspitID}) |
             @Html.ActionLink("Obrisi", "Delete", new { bi = item.Students.BI, ispit = item.Ispits.IspitID })
         </td>
