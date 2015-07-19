@@ -16,9 +16,35 @@ namespace Fakultet_IS.Controllers
         private FakultetEntities db = new FakultetEntities();
 
         // GET: Students
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
-            return View(db.Students.ToList());
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.BISortParm = sortOrder == "BI" ? "bi_desc" : "BI";
+            ViewBag.CitySortParm = sortOrder == "city" ? "city_desc" : "city";
+            var students = from s in db.Students
+                           select s;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.Prezime);
+                    break;
+                case "BI":
+                    students = students.OrderBy(s => s.BI);
+                    break;
+                case "bi_desc":
+                    students = students.OrderByDescending(s => s.BI);
+                    break;
+                case "city":
+                    students = students.OrderBy(s => s.Grad);
+                    break;
+                case "city_desc":
+                    students = students.OrderByDescending(s => s.Grad);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.Prezime);
+                    break;
+            }
+            return View(students.ToList());
         }
 
         // GET: Students/Details/5

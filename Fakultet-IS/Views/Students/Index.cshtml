@@ -12,19 +12,19 @@
 <table class="table">
     <tr>
         <th style="width: 100px;">
-            @Html.DisplayNameFor(model => model.BI)
+            @Html.ActionLink("BI", "Index", new { sortOrder = ViewBag.BISortParm})
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Ime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Prezime)
+            @Html.ActionLink("Prezime", "Index", new { sortOrder = ViewBag.NameSortParm})
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Adresa)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Grad)
+            @Html.ActionLink("Grad", "Index", new { sortOrder = ViewBag.CitySortParm})
         </th>
         <th>
             Akcije
