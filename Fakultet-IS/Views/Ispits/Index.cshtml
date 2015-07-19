@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Fakultet_IS.Models.Ispits>
+
+@{
+    ViewBag.Title = "Evidencija ispita";
+}
+
+<h2>Evidencija ispita</h2>
+
+<p>
+    @Html.ActionLink("Kreiraj novi ispit", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("ID", "Index", new { sortOrder = ViewBag.IDSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Naziv ispita", "Index", new { sortOrder = ViewBag.NameSortParm })
+        </th>
+        <th>
+            Akcije
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IspitID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Naziv)
+        </td>
+        <td>
+            @Html.ActionLink("Azuriraj", "Edit", new { id=item.IspitID }) |
+            @Html.ActionLink("Detalji", "Details", new { id=item.IspitID }) |
+            @Html.ActionLink("Obrisi", "Delete", new { id=item.IspitID })
+        </td>
+    </tr>
+}
+
+</table>

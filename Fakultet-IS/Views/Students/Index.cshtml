@@ -23,7 +23,7 @@
 
 <table class="table">
     <tr>
-        <th style="width: 100px;">
+        <th style="width: 60px;">
             @Html.ActionLink("BI", "Index", new { sortOrder = ViewBag.BISortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
@@ -37,7 +37,7 @@
             @*@Html.DisplayNameFor(model => model.Adresa)*@
             Adresa
         </th>
-        <th>
+        <th style="width: 180px;">
             @Html.ActionLink("Grad", "Index", new { sortOrder = ViewBag.CitySortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
@@ -64,7 +64,7 @@
         </td>
         <td>
             @Html.ActionLink("Azuriraj", "Edit", new { id=item.BI }) |
-            @* @Html.ActionLink("Detalji", "Details", new { id=item.BI }) |*@
+            @Html.ActionLink("Detalji", "Details", new { id=item.BI }) |
             @Html.ActionLink("Obrisi", "Delete", new { id=item.BI })
         </td>
     </tr>

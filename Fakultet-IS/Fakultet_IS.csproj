@@ -197,6 +197,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IspitsController.cs" />
     <Compile Include="Controllers\PrijavasController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -369,6 +370,11 @@
     <Content Include="Views\Prijavas\Details.cshtml" />
     <Content Include="Views\Prijavas\Edit.cshtml" />
     <Content Include="Views\Prijavas\Index.cshtml" />
+    <Content Include="Views\Ispits\Create.cshtml" />
+    <Content Include="Views\Ispits\Delete.cshtml" />
+    <Content Include="Views\Ispits\Details.cshtml" />
+    <Content Include="Views\Ispits\Edit.cshtml" />
+    <Content Include="Views\Ispits\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
