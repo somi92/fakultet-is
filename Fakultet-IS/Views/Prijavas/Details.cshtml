@@ -1,0 +1,42 @@
+﻿@model Fakultet_IS.Models.Prijavas
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Prijavas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Ocena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ocena)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ispits.Naziv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ispits.Naziv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Students.Ime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Students.Ime)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

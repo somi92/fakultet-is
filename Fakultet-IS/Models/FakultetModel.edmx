@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ispits">
+          <Key>
+            <PropertyRef Name="IspitID" />
+          </Key>
+          <Property Name="IspitID" Type="float" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Prijavas">
+          <Key>
+            <PropertyRef Name="BI" />
+            <PropertyRef Name="IspitID" />
+          </Key>
+          <Property Name="BI" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="IspitID" Type="float" Nullable="false" />
+          <Property Name="Ocena" Type="float" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="BI" />
+          </Key>
+          <Property Name="BI" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="255" />
+          <Property Name="Prezime" Type="nvarchar" MaxLength="255" />
+          <Property Name="Adresa" Type="nvarchar" MaxLength="255" />
+          <Property Name="Grad" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_Prijava_Ispit">
+          <End Role="Ispits" Type="Self.Ispits" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Prijavas" Type="Self.Prijavas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ispits">
+              <PropertyRef Name="IspitID" />
+            </Principal>
+            <Dependent Role="Prijavas">
+              <PropertyRef Name="IspitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prijava_Student">
+          <End Role="Students" Type="Self.Students" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Prijavas" Type="Self.Prijavas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="BI" />
+            </Principal>
+            <Dependent Role="Prijavas">
+              <PropertyRef Name="BI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Ispits" EntityType="Self.Ispits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prijavas" EntityType="Self.Prijavas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Prijava_Ispit" Association="Self.FK_Prijava_Ispit">
+            <End Role="Ispits" EntitySet="Ispits" />
+            <End Role="Prijavas" EntitySet="Prijavas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prijava_Student" Association="Self.FK_Prijava_Student">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Prijavas" EntitySet="Prijavas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ispits">
+          <Key>
+            <PropertyRef Name="IspitID" />
+          </Key>
+          <Property Name="IspitID" Type="Double" Nullable="false" />
+          <Property Name="Naziv" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Prijavas" Relationship="Self.FK_Prijava_Ispit" FromRole="Ispits" ToRole="Prijavas" />
+        </EntityType>
+        <EntityType Name="Prijavas">
+          <Key>
+            <PropertyRef Name="BI" />
+            <PropertyRef Name="IspitID" />
+          </Key>
+          <Property Name="BI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IspitID" Type="Double" Nullable="false" />
+          <Property Name="Ocena" Type="Double" />
+          <NavigationProperty Name="Ispits" Relationship="Self.FK_Prijava_Ispit" FromRole="Prijavas" ToRole="Ispits" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Prijava_Student" FromRole="Prijavas" ToRole="Students" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="BI" />
+          </Key>
+          <Property Name="BI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ime" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Prezime" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Adresa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Grad" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Prijavas" Relationship="Self.FK_Prijava_Student" FromRole="Students" ToRole="Prijavas" />
+        </EntityType>
+        <Association Name="FK_Prijava_Ispit">
+          <End Role="Ispits" Type="Self.Ispits" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Prijavas" Type="Self.Prijavas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ispits">
+              <PropertyRef Name="IspitID" />
+            </Principal>
+            <Dependent Role="Prijavas">
+              <PropertyRef Name="IspitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prijava_Student">
+          <End Role="Students" Type="Self.Students" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Prijavas" Type="Self.Prijavas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="BI" />
+            </Principal>
+            <Dependent Role="Prijavas">
+              <PropertyRef Name="BI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FakultetEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ispits" EntityType="Self.Ispits" />
+          <EntitySet Name="Prijavas" EntityType="Self.Prijavas" />
+          <EntitySet Name="Students" EntityType="Self.Students" />
+          <AssociationSet Name="FK_Prijava_Ispit" Association="Self.FK_Prijava_Ispit">
+            <End Role="Ispits" EntitySet="Ispits" />
+            <End Role="Prijavas" EntitySet="Prijavas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prijava_Student" Association="Self.FK_Prijava_Student">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Prijavas" EntitySet="Prijavas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="FakultetEntities">
+          <EntitySetMapping Name="Ispits">
+            <EntityTypeMapping TypeName="Model.Ispits">
+              <MappingFragment StoreEntitySet="Ispits">
+                <ScalarProperty Name="IspitID" ColumnName="IspitID" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prijavas">
+            <EntityTypeMapping TypeName="Model.Prijavas">
+              <MappingFragment StoreEntitySet="Prijavas">
+                <ScalarProperty Name="BI" ColumnName="BI" />
+                <ScalarProperty Name="IspitID" ColumnName="IspitID" />
+                <ScalarProperty Name="Ocena" ColumnName="Ocena" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="Model.Students">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="BI" ColumnName="BI" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
+                <ScalarProperty Name="Adresa" ColumnName="Adresa" />
+                <ScalarProperty Name="Grad" ColumnName="Grad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Fakultet_IS.Models.Prijavas>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Ispits.Naziv)*@
+            Naziv predmeta
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Students.BI)*@
+            Broj indeksa
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Students.Ime)*@
+            Ime i prezime
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Ocena)*@
+            Ocena
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ispits.Naziv)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Students.BI)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Students.Ime)
+            @Html.DisplayFor(modelItem => item.Students.Prezime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ocena)
+        </td>
+        <td>
+            @Html.ActionLink("Promeni", "Edit", new { bi = item.Students.BI, ispit = item.Ispits.IspitID }) |
+            @Html.ActionLink("Detalji", "Details", new { bi = item.Students.BI, ispit = item.Ispits.IspitID}) |
+            @Html.ActionLink("Obrisi", "Delete", new { bi = item.Students.BI, ispit = item.Ispits.IspitID })
+        </td>
+    </tr>
+}
+
+</table>
