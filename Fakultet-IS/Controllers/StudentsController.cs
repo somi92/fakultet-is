@@ -16,13 +16,35 @@ namespace Fakultet_IS.Controllers
         private FakultetEntities db = new FakultetEntities();
 
         // GET: Students
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string currentFilter, string search, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.BISortParm = sortOrder == "BI" ? "bi_desc" : "BI";
             ViewBag.CitySortParm = sortOrder == "city" ? "city_desc" : "city";
+
+            if (search != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                search = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = search;
+
+
             var students = from s in db.Students
                            select s;
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                students = students.Where(s => s.Prezime.Contains(search)
+                                       || s.Ime.Contains(search)
+                                       || s.BI.Contains(search));
+            }
+
             switch (sortOrder)
             {
                 case "name_desc":
@@ -44,7 +66,9 @@ namespace Fakultet_IS.Controllers
                     students = students.OrderBy(s => s.Prezime);
                     break;
             }
-            return View(students.ToList());
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(students.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Students/Details/5

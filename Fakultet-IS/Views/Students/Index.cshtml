@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Fakultet_IS.Models.Students>
+﻿@model PagedList.IPagedList<Fakultet_IS.Models.Students>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Evidencija studenata";
@@ -9,19 +11,31 @@
 <p>
    @Html.ActionLink("Dodaj novog studenta", "Create")
 </p>
+
+@using (Html.BeginForm("Index", "Students", FormMethod.Get))
+{
+    <p>
+        Pretrazi po imenu/prezimenu ili broju indeksa: @Html.TextBox("Search", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Pronadji" />
+    </p>
+}
+
+
 <table class="table">
     <tr>
         <th style="width: 100px;">
-            @Html.ActionLink("BI", "Index", new { sortOrder = ViewBag.BISortParm})
+            @Html.ActionLink("BI", "Index", new { sortOrder = ViewBag.BISortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Ime)
+            @*@Html.DisplayNameFor(model => model.Ime)*@
+            Ime
         </th>
         <th>
-            @Html.ActionLink("Prezime", "Index", new { sortOrder = ViewBag.NameSortParm})
+            @Html.ActionLink("Prezime", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Adresa)
+            @*@Html.DisplayNameFor(model => model.Adresa)*@
+            Adresa
         </th>
         <th>
             @Html.ActionLink("Grad", "Index", new { sortOrder = ViewBag.CitySortParm})
@@ -57,3 +71,9 @@
 }
 
 </table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
