@@ -1,16 +1,19 @@
 ﻿@model IEnumerable<Fakultet_IS.Models.Students>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Evidencija studenata";
 }
 
-<h2>Index</h2>
+<h2>Evidencija studenata</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+   @Html.ActionLink("Dodaj novog studenta", "Create")
 </p>
 <table class="table">
     <tr>
+        <th style="width: 100px;">
+            @Html.DisplayNameFor(model => model.BI)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Ime)
         </th>
@@ -23,11 +26,16 @@
         <th>
             @Html.DisplayNameFor(model => model.Grad)
         </th>
-        <th></th>
+        <th>
+            Akcije
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BI)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Ime)
         </td>
@@ -41,9 +49,9 @@
             @Html.DisplayFor(modelItem => item.Grad)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BI }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BI }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BI })
+            @Html.ActionLink("Azuriraj", "Edit", new { id=item.BI }) |
+            @* @Html.ActionLink("Detalji", "Details", new { id=item.BI }) |*@
+            @Html.ActionLink("Obrisi", "Delete", new { id=item.BI })
         </td>
     </tr>
 }
