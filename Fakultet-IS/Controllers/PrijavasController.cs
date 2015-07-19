@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Fakultet_IS.Models;
+using PagedList;
 
 namespace Fakultet_IS.Controllers
 {
@@ -15,11 +16,23 @@ namespace Fakultet_IS.Controllers
         private FakultetEntities db = new FakultetEntities();
 
         // GET: Prijavas
-        public ActionResult Index(string sortOrder, string search)
+        public ActionResult Index(string sortOrder, string currentFilter, string search, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.BISortParm = sortOrder == "BI" ? "bi_desc" : "BI";
             ViewBag.SubjectSortParm = sortOrder == "subj" ? "subj_desc" : "subj";
+
+            if (search != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                search = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = search;
 
             var prijavas = from s in db.Prijavas.Include(p => p.Ispits).Include(p => p.Students)
                                select s;
@@ -54,7 +67,9 @@ namespace Fakultet_IS.Controllers
                     break;
             }
 
-            return View(prijavas.ToList());
+            int pageSize = 15;
+            int pageNumber = (page ?? 1);
+            return View(prijavas.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Prijavas/Details/5
