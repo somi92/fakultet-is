@@ -68,7 +68,7 @@ namespace Fakultet_IS.Controllers
             }
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(students.ToPagedList(pageNumber, pageSize));
+            return View("Index", students.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Students/Details/5
