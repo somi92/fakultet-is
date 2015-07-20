@@ -8,12 +8,23 @@ using System.Web;
 using System.Web.Mvc;
 using Fakultet_IS.Models;
 using PagedList;
+using Fakultet_IS.DAL;
 
 namespace Fakultet_IS.Controllers
 {
     public class StudentsController : Controller
     {
-        private FakultetEntities db = new FakultetEntities();
+        private IStudentsRepository studentRepository;
+
+        public StudentsController()
+        {
+            this.studentRepository = new StudentsRepository(new FakultetEntities());
+        }
+
+        public StudentsController(IStudentsRepository studentRepository)
+        {
+            this.studentRepository = studentRepository;
+        }
 
         // GET: Students
         public ActionResult Index(string sortOrder, string currentFilter, string search, int? page)
@@ -35,7 +46,7 @@ namespace Fakultet_IS.Controllers
             ViewBag.CurrentFilter = search;
 
 
-            var students = from s in db.Students
+            var students = from s in studentRepository.GetStudents()
                            select s;
 
             if (!String.IsNullOrEmpty(search))
@@ -78,7 +89,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = db.Students.Find(id);
+            Students students = studentRepository.GetStudent(Convert.ToInt32(id));
             if (students == null)
             {
                 return HttpNotFound();
@@ -101,8 +112,8 @@ namespace Fakultet_IS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Students.Add(students);
-                db.SaveChanges();
+                studentRepository.InsertStudent(students);
+                studentRepository.Save();
                 return RedirectToAction("Index");
             }
 
@@ -116,7 +127,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = db.Students.Find(id);
+            Students students = studentRepository.GetStudent(Convert.ToInt32(id));
             if (students == null)
             {
                 return HttpNotFound();
@@ -133,8 +144,8 @@ namespace Fakultet_IS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(students).State = EntityState.Modified;
-                db.SaveChanges();
+                studentRepository.UpdateStudent(students);
+                studentRepository.Save();
                 return RedirectToAction("Index");
             }
             return View(students);
@@ -147,7 +158,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = db.Students.Find(id);
+            Students students = studentRepository.GetStudent(Convert.ToInt32(id));
             if (students == null)
             {
                 return HttpNotFound();
@@ -160,9 +171,9 @@ namespace Fakultet_IS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Students students = db.Students.Find(id);
-            db.Students.Remove(students);
-            db.SaveChanges();
+            Students students = studentRepository.GetStudent(Convert.ToInt32(id));
+            studentRepository.DeleteStudent(Convert.ToInt32(id));
+            studentRepository.Save();
             return RedirectToAction("Index");
         }
 
@@ -170,7 +181,7 @@ namespace Fakultet_IS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                studentRepository.Dispose();
             }
             base.Dispose(disposing);
         }
