@@ -204,8 +204,12 @@
     <Compile Include="Controllers\IspitsController.cs" />
     <Compile Include="Controllers\PrijavasController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="DAL\FakultetRepository.cs" />
+    <Compile Include="DAL\IFakultetRepository.cs" />
     <Compile Include="DAL\IStudentsRepository.cs" />
+    <Compile Include="DAL\IUnitOfWork.cs" />
     <Compile Include="DAL\StudentsRepository.cs" />
+    <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
