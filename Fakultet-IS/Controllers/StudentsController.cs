@@ -14,16 +14,17 @@ namespace Fakultet_IS.Controllers
 {
     public class StudentsController : Controller
     {
-        private IStudentsRepository studentRepository;
+        private UnitOfWork unitOfWork;
 
         public StudentsController()
         {
-            this.studentRepository = new StudentsRepository(new FakultetEntities());
+            this.unitOfWork = new UnitOfWork();
         }
 
-        public StudentsController(IStudentsRepository studentRepository)
+        public StudentsController(IFakultetRepository<Students> studentRepository)
         {
-            this.studentRepository = studentRepository;
+            this.unitOfWork = new UnitOfWork();
+            this.unitOfWork.StudentsRepository = studentRepository;
         }
 
         // GET: Students
@@ -46,7 +47,7 @@ namespace Fakultet_IS.Controllers
             ViewBag.CurrentFilter = search;
 
 
-            var students = from s in studentRepository.GetStudents()
+            var students = from s in unitOfWork.StudentsRepository.GetEntities()
                            select s;
 
             if (!String.IsNullOrEmpty(search))
@@ -89,7 +90,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = studentRepository.GetStudent(Convert.ToInt32(id));
+            Students students = unitOfWork.StudentsRepository.GetEntityById(Convert.ToInt32(id));
             if (students == null)
             {
                 return HttpNotFound();
@@ -112,8 +113,8 @@ namespace Fakultet_IS.Controllers
         {
             if (ModelState.IsValid)
             {
-                studentRepository.InsertStudent(students);
-                studentRepository.Save();
+                unitOfWork.StudentsRepository.InsertEntity(students);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
@@ -127,7 +128,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = studentRepository.GetStudent(Convert.ToInt32(id));
+            Students students = unitOfWork.StudentsRepository.GetEntityById(Convert.ToInt32(id));
             if (students == null)
             {
                 return HttpNotFound();
@@ -144,8 +145,8 @@ namespace Fakultet_IS.Controllers
         {
             if (ModelState.IsValid)
             {
-                studentRepository.UpdateStudent(students);
-                studentRepository.Save();
+                unitOfWork.StudentsRepository.UpdateEntity(students);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(students);
@@ -158,7 +159,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = studentRepository.GetStudent(Convert.ToInt32(id));
+            Students students = unitOfWork.StudentsRepository.GetEntityById(Convert.ToInt32(id));
             if (students == null)
             {
                 return HttpNotFound();
@@ -171,9 +172,9 @@ namespace Fakultet_IS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Students students = studentRepository.GetStudent(Convert.ToInt32(id));
-            studentRepository.DeleteStudent(Convert.ToInt32(id));
-            studentRepository.Save();
+            Students students = unitOfWork.StudentsRepository.GetEntityById(Convert.ToInt32(id));
+            unitOfWork.StudentsRepository.DeleteEntity(Convert.ToInt32(id));
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -181,7 +182,7 @@ namespace Fakultet_IS.Controllers
         {
             if (disposing)
             {
-                studentRepository.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }

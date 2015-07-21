@@ -207,7 +207,6 @@
     <Compile Include="DAL\FakultetRepository.cs" />
     <Compile Include="DAL\IFakultetRepository.cs" />
     <Compile Include="DAL\IStudentsRepository.cs" />
-    <Compile Include="DAL\IUnitOfWork.cs" />
     <Compile Include="DAL\StudentsRepository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />

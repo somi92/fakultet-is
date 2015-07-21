@@ -6,12 +6,12 @@ using System.Web;
 
 namespace Fakultet_IS.DAL
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork
     {
         private FakultetEntities context = new FakultetEntities();
         private IFakultetRepository<Students> studentsRepository;
 
-        public IFakultetRepository<Students> FakultetRepository
+        public IFakultetRepository<Students> StudentsRepository
         {
             get
             {
