@@ -8,12 +8,24 @@ using System.Web;
 using System.Web.Mvc;
 using Fakultet_IS.Models;
 using PagedList;
+using Fakultet_IS.DAL;
 
 namespace Fakultet_IS.Controllers
 {
     public class IspitsController : Controller
     {
-        private FakultetEntities db = new FakultetEntities();
+        private UnitOfWork unitOfWork;
+
+        public IspitsController()
+        {
+            this.unitOfWork = new UnitOfWork();
+        }
+
+        public IspitsController(IFakultetRepository<Ispits> ispitRepository)
+        {
+            this.unitOfWork = new UnitOfWork();
+            this.unitOfWork.IspitsRepository = ispitRepository;
+        }
 
         // GET: Ispits
         public ActionResult Index(string sortOrder, int? page)
@@ -21,7 +33,7 @@ namespace Fakultet_IS.Controllers
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.IDSortParm = sortOrder == "ID" ? "id_desc" : "ID";
-            var ispits = from s in db.Ispits
+            var ispits = from s in unitOfWork.IspitsRepository.GetEntities()
                            select s;
 
             switch (sortOrder)
@@ -52,7 +64,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ispits ispits = db.Ispits.Find(id);
+            Ispits ispits = unitOfWork.IspitsRepository.GetEntityById(id);
             if (ispits == null)
             {
                 return HttpNotFound();
@@ -75,8 +87,8 @@ namespace Fakultet_IS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Ispits.Add(ispits);
-                db.SaveChanges();
+                unitOfWork.IspitsRepository.InsertEntity(ispits);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
@@ -90,7 +102,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ispits ispits = db.Ispits.Find(id);
+            Ispits ispits = unitOfWork.IspitsRepository.GetEntityById(id);
             if (ispits == null)
             {
                 return HttpNotFound();
@@ -107,8 +119,8 @@ namespace Fakultet_IS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ispits).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.IspitsRepository.UpdateEntity(ispits);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(ispits);
@@ -121,7 +133,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ispits ispits = db.Ispits.Find(id);
+            Ispits ispits = unitOfWork.IspitsRepository.GetEntityById(id);
             if (ispits == null)
             {
                 return HttpNotFound();
@@ -134,9 +146,9 @@ namespace Fakultet_IS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(double id)
         {
-            Ispits ispits = db.Ispits.Find(id);
-            db.Ispits.Remove(ispits);
-            db.SaveChanges();
+            Ispits ispits = unitOfWork.IspitsRepository.GetEntityById(id);
+            unitOfWork.IspitsRepository.DeleteEntity(ispits);
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -144,7 +156,7 @@ namespace Fakultet_IS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }

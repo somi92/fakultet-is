@@ -10,6 +10,8 @@ namespace Fakultet_IS.DAL
     {
         private FakultetEntities context = new FakultetEntities();
         private IFakultetRepository<Students> studentsRepository;
+        private IFakultetRepository<Ispits> ispitsRepository;
+        private IFakultetRepository<Prijavas> prijavasRepository;
 
         public IFakultetRepository<Students> StudentsRepository
         {
@@ -25,6 +27,40 @@ namespace Fakultet_IS.DAL
             set
             {
                 this.studentsRepository = value;
+            }
+        }
+
+        public IFakultetRepository<Ispits> IspitsRepository
+        {
+            get
+            {
+                if(ispitsRepository == null)
+                {
+                    this.ispitsRepository = new FakultetRepository<Ispits>(context);
+                }
+                return ispitsRepository;
+            }
+
+            set
+            {
+                this.ispitsRepository = value;
+            }
+        }
+
+        public IFakultetRepository<Prijavas> PrijavasRepository
+        {
+            get
+            {
+                if (prijavasRepository == null)
+                {
+                    this.prijavasRepository = new FakultetRepository<Prijavas>(context);
+                }
+                return prijavasRepository;
+            }
+
+            set
+            {
+                this.prijavasRepository = value;
             }
         }
 

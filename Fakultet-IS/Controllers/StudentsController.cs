@@ -90,7 +90,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = unitOfWork.StudentsRepository.GetEntityById(Convert.ToInt32(id));
+            Students students = unitOfWork.StudentsRepository.GetEntityById(id);
             if (students == null)
             {
                 return HttpNotFound();
@@ -128,7 +128,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = unitOfWork.StudentsRepository.GetEntityById(Convert.ToInt32(id));
+            Students students = unitOfWork.StudentsRepository.GetEntityById(id);
             if (students == null)
             {
                 return HttpNotFound();
@@ -159,7 +159,7 @@ namespace Fakultet_IS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Students students = unitOfWork.StudentsRepository.GetEntityById(Convert.ToInt32(id));
+            Students students = unitOfWork.StudentsRepository.GetEntityById(id);
             if (students == null)
             {
                 return HttpNotFound();
@@ -172,8 +172,8 @@ namespace Fakultet_IS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Students students = unitOfWork.StudentsRepository.GetEntityById(Convert.ToInt32(id));
-            unitOfWork.StudentsRepository.DeleteEntity(Convert.ToInt32(id));
+            Students students = unitOfWork.StudentsRepository.GetEntityById(id);
+            unitOfWork.StudentsRepository.DeleteEntity(id);
             unitOfWork.Save();
             return RedirectToAction("Index");
         }

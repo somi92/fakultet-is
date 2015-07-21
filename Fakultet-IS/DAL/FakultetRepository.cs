@@ -28,6 +28,16 @@ namespace Fakultet_IS.DAL
             return dbSet.Find(id);
         }
 
+        public virtual TEntity GetEntityById(string id)
+        {
+            return dbSet.Find(id);
+        }
+
+        public virtual TEntity GetEntityById(object[] id)
+        {
+            return dbSet.Find(id);
+        }
+
         public virtual void InsertEntity(TEntity entity)
         {
             dbSet.Add(entity);

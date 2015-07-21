@@ -10,6 +10,8 @@ namespace Fakultet_IS.DAL
     {
         IEnumerable<TEntity> GetEntities();
         TEntity GetEntityById(object id);
+        TEntity GetEntityById(string id);
+        TEntity GetEntityById(object[] id);
         void InsertEntity(TEntity entity);
         void DeleteEntity(object id);
         void DeleteEntity(TEntity entity);

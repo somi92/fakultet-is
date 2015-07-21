@@ -8,12 +8,24 @@ using System.Web;
 using System.Web.Mvc;
 using Fakultet_IS.Models;
 using PagedList;
+using Fakultet_IS.DAL;
 
 namespace Fakultet_IS.Controllers
 {
     public class PrijavasController : Controller
     {
-        private FakultetEntities db = new FakultetEntities();
+        private UnitOfWork unitOfWork;
+
+        public PrijavasController()
+        {
+            this.unitOfWork = new UnitOfWork();
+        }
+
+        public PrijavasController(IFakultetRepository<Prijavas> prijavaRepository)
+        {
+            this.unitOfWork = new UnitOfWork();
+            this.unitOfWork.PrijavasRepository = prijavaRepository;
+        }
 
         // GET: Prijavas
         public ActionResult Index(string sortOrder, string currentFilter, string search, int? page)
@@ -34,8 +46,10 @@ namespace Fakultet_IS.Controllers
 
             ViewBag.CurrentFilter = search;
 
-            var prijavas = from s in db.Prijavas.Include(p => p.Ispits).Include(p => p.Students)
-                               select s;
+            var prijavas = from s in unitOfWork.PrijavasRepository.GetEntities()
+                           select s;
+            //var prijavas = from s in db.Prijavas.Include(p => p.Ispits).Include(p => p.Students)
+            //                   select s;
 
             if (!String.IsNullOrEmpty(search))
             {
@@ -81,7 +95,7 @@ namespace Fakultet_IS.Controllers
             }
             double ispitID = Convert.ToDouble(ispit);
             object[] con = {bi, ispitID};
-            Prijavas prijavas = db.Prijavas.Find(con);
+            Prijavas prijavas = unitOfWork.PrijavasRepository.GetEntityById(con);
             if (prijavas == null)
             {
                 return HttpNotFound();
@@ -92,8 +106,8 @@ namespace Fakultet_IS.Controllers
         // GET: Prijavas/Create
         public ActionResult Create()
         {
-            ViewBag.IspitID = new SelectList(db.Ispits, "IspitID", "Naziv");
-            var students = db.Students;
+            ViewBag.IspitID = new SelectList(unitOfWork.IspitsRepository.GetEntities(), "IspitID", "Naziv");
+            var students = unitOfWork.StudentsRepository.GetEntities();
             List<object> studentsList = new List<object>();
             foreach (var student in students)
                 studentsList.Add(new
@@ -114,13 +128,13 @@ namespace Fakultet_IS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Prijavas.Add(prijavas);
-                db.SaveChanges();
+                unitOfWork.PrijavasRepository.InsertEntity(prijavas);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IspitID = new SelectList(db.Ispits, "IspitID", "Naziv", prijavas.IspitID);
-            ViewBag.BI = new SelectList(db.Students, "BI", "Ime", prijavas.BI);
+            ViewBag.IspitID = new SelectList(unitOfWork.IspitsRepository.GetEntities(), "IspitID", "Naziv", prijavas.IspitID);
+            ViewBag.BI = new SelectList(unitOfWork.StudentsRepository.GetEntities(), "BI", "Ime", prijavas.BI);
             return View(prijavas);
         }
 
@@ -133,13 +147,13 @@ namespace Fakultet_IS.Controllers
             }
             double ispitID = Convert.ToDouble(ispit);
             object[] con = { bi, ispitID };
-            Prijavas prijavas = db.Prijavas.Find(con);
+            Prijavas prijavas = unitOfWork.PrijavasRepository.GetEntityById(con);
             if (prijavas == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IspitID = new SelectList(db.Ispits, "IspitID", "Naziv", prijavas.IspitID);
-            ViewBag.BI = new SelectList(db.Students, "BI", "Ime", prijavas.BI);
+            ViewBag.IspitID = new SelectList(unitOfWork.IspitsRepository.GetEntities(), "IspitID", "Naziv", prijavas.IspitID);
+            ViewBag.BI = new SelectList(unitOfWork.StudentsRepository.GetEntities(), "BI", "Ime", prijavas.BI);
             return View(prijavas);
         }
 
@@ -152,12 +166,12 @@ namespace Fakultet_IS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(prijavas).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.PrijavasRepository.UpdateEntity(prijavas);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.IspitID = new SelectList(db.Ispits, "IspitID", "Naziv", prijavas.IspitID);
-            ViewBag.BI = new SelectList(db.Students, "BI", "Ime", prijavas.BI);
+            ViewBag.IspitID = new SelectList(unitOfWork.IspitsRepository.GetEntities(), "IspitID", "Naziv", prijavas.IspitID);
+            ViewBag.BI = new SelectList(unitOfWork.StudentsRepository.GetEntities(), "BI", "Ime", prijavas.BI);
             return View(prijavas);
         }
 
@@ -170,7 +184,7 @@ namespace Fakultet_IS.Controllers
             }
             double ispitID = Convert.ToDouble(ispit);
             object[] con = { bi, ispitID };
-            Prijavas prijavas = db.Prijavas.Find(con);
+            Prijavas prijavas = unitOfWork.PrijavasRepository.GetEntityById(con);
             if (prijavas == null)
             {
                 return HttpNotFound();
@@ -185,9 +199,9 @@ namespace Fakultet_IS.Controllers
         {
             double ispitID = Convert.ToDouble(ispit);
             object[] con = { bi, ispitID };
-            Prijavas prijavas = db.Prijavas.Find(con);
-            db.Prijavas.Remove(prijavas);
-            db.SaveChanges();
+            Prijavas prijavas = unitOfWork.PrijavasRepository.GetEntityById(con);
+            unitOfWork.PrijavasRepository.DeleteEntity(prijavas);
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -195,7 +209,7 @@ namespace Fakultet_IS.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
