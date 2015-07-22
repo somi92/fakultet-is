@@ -63,10 +63,8 @@ namespace Fakultet_IS.Tests.Controllers
         [TestMethod]
         public void Create()
         {
-            var repMock = new Mock<IFakultetRepository<Students>>();
             controller = new StudentsController();
             ViewResult result = controller.Create() as ViewResult;
-            repMock.VerifyAll();
             Assert.AreEqual("Create", result.ViewName);
         }
 

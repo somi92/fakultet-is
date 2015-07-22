@@ -54,7 +54,7 @@ namespace Fakultet_IS.Controllers
 
             int pageSize = 5;
             int pageNumber = (page ?? 1);
-            return View(ispits.ToPagedList(pageNumber, pageSize));
+            return View("Index", ispits.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Ispits/Details/5
@@ -69,13 +69,13 @@ namespace Fakultet_IS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ispits);
+            return View("Details", ispits);
         }
 
         // GET: Ispits/Create
         public ActionResult Create()
         {
-            return View();
+            return View("Create");
         }
 
         // POST: Ispits/Create
@@ -107,7 +107,7 @@ namespace Fakultet_IS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ispits);
+            return View("Edit", ispits);
         }
 
         // POST: Ispits/Edit/5
@@ -138,7 +138,7 @@ namespace Fakultet_IS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ispits);
+            return View("Delete", ispits);
         }
 
         // POST: Ispits/Delete/5
