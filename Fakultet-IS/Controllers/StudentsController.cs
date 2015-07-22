@@ -95,13 +95,13 @@ namespace Fakultet_IS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(students);
+            return View("Details", students);
         }
 
         // GET: Students/Create
         public ActionResult Create()
         {
-            return View();
+            return View("Create");
         }
 
         // POST: Students/Create
@@ -133,7 +133,7 @@ namespace Fakultet_IS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(students);
+            return View("Edit", students);
         }
 
         // POST: Students/Edit/5
@@ -164,7 +164,7 @@ namespace Fakultet_IS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(students);
+            return View("Delete", students);
         }
 
         // POST: Students/Delete/5
