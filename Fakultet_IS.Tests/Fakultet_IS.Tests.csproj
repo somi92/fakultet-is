@@ -125,6 +125,7 @@
   <ItemGroup>
     <Compile Include="Controllers\IspitsControllerTest.cs" />
     <Compile Include="Controllers\StudentsControllerTest.cs" />
+    <Compile Include="Controllers\PrijavasControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>

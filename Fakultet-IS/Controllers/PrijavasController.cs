@@ -27,6 +27,16 @@ namespace Fakultet_IS.Controllers
             this.unitOfWork.PrijavasRepository = prijavaRepository;
         }
 
+        public void SetStudentsRepository(IFakultetRepository<Students> studentRepository)
+        {
+            this.unitOfWork.StudentsRepository = studentRepository;
+        }
+
+        public void SetIspitsRepository(IFakultetRepository<Ispits> ispitRepository)
+        {
+            this.unitOfWork.IspitsRepository = ispitRepository;
+        }
+
         // GET: Prijavas
         public ActionResult Index(string sortOrder, string currentFilter, string search, int? page)
         {
@@ -83,7 +93,7 @@ namespace Fakultet_IS.Controllers
 
             int pageSize = 15;
             int pageNumber = (page ?? 1);
-            return View(prijavas.ToPagedList(pageNumber, pageSize));
+            return View("Index", prijavas.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Prijavas/Details/5
@@ -100,7 +110,7 @@ namespace Fakultet_IS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(prijavas);
+            return View("Details", prijavas);
         }
 
         // GET: Prijavas/Create
@@ -116,7 +126,7 @@ namespace Fakultet_IS.Controllers
                     BIImePrezime = student.BI + " - " + student.Ime + " " + student.Prezime
                 });
             ViewBag.BI = new SelectList(studentsList, "BI", "BIImePrezime");
-            return View();
+            return View("Create");
         }
 
         // POST: Prijavas/Create
@@ -154,7 +164,7 @@ namespace Fakultet_IS.Controllers
             }
             ViewBag.IspitID = new SelectList(unitOfWork.IspitsRepository.GetEntities(), "IspitID", "Naziv", prijavas.IspitID);
             ViewBag.BI = new SelectList(unitOfWork.StudentsRepository.GetEntities(), "BI", "Ime", prijavas.BI);
-            return View(prijavas);
+            return View("Edit", prijavas);
         }
 
         // POST: Prijavas/Edit/5
@@ -189,7 +199,7 @@ namespace Fakultet_IS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(prijavas);
+            return View("Delete", prijavas);
         }
 
         // POST: Prijavas/Delete/5
