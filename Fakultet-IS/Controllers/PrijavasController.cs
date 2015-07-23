@@ -139,7 +139,15 @@ namespace Fakultet_IS.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.PrijavasRepository.InsertEntity(prijavas);
-                unitOfWork.Save();
+                try
+                {
+                    unitOfWork.Save();
+                    TempData["msg"] = "";
+                }
+                catch (Exception e)
+                {
+                    TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+                }
                 return RedirectToAction("Index");
             }
 
@@ -177,7 +185,15 @@ namespace Fakultet_IS.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.PrijavasRepository.UpdateEntity(prijavas);
-                unitOfWork.Save();
+                try
+                {
+                    unitOfWork.Save();
+                    TempData["msg"] = "";
+                }
+                catch (Exception e)
+                {
+                    TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.IspitID = new SelectList(unitOfWork.IspitsRepository.GetEntities(), "IspitID", "Naziv", prijavas.IspitID);
@@ -211,7 +227,15 @@ namespace Fakultet_IS.Controllers
             object[] con = { bi, ispitID };
             Prijavas prijavas = unitOfWork.PrijavasRepository.GetEntityById(con);
             unitOfWork.PrijavasRepository.DeleteEntity(prijavas);
-            unitOfWork.Save();
+            try
+            {
+                unitOfWork.Save();
+                TempData["msg"] = "";
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+            }
             return RedirectToAction("Index");
         }
 

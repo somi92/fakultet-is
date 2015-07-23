@@ -114,7 +114,15 @@ namespace Fakultet_IS.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.StudentsRepository.InsertEntity(students);
-                unitOfWork.Save();
+                try
+                {
+                    unitOfWork.Save();
+                    TempData["msg"] = "";
+                }
+                catch (Exception e)
+                {
+                    TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+                }
                 return RedirectToAction("Index");
             }
 
@@ -146,7 +154,15 @@ namespace Fakultet_IS.Controllers
             if (ModelState.IsValid)
             {
                 unitOfWork.StudentsRepository.UpdateEntity(students);
-                unitOfWork.Save();
+                try
+                {
+                    unitOfWork.Save();
+                    TempData["msg"] = "";
+                }
+                catch (Exception e)
+                {
+                    TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+                }
                 return RedirectToAction("Index");
             }
             return View(students);
@@ -174,7 +190,15 @@ namespace Fakultet_IS.Controllers
         {
             Students students = unitOfWork.StudentsRepository.GetEntityById(id);
             unitOfWork.StudentsRepository.DeleteEntity(id);
-            unitOfWork.Save();
+            try
+            {
+                unitOfWork.Save();
+                TempData["msg"] = "";
+            }
+            catch (Exception e)
+            {
+                TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+            }
             return RedirectToAction("Index");
         }
 

@@ -66,7 +66,14 @@ namespace Fakultet_IS.DAL
 
         public void Save()
         {
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         private bool disposed = false;
