@@ -117,13 +117,13 @@ namespace Fakultet_IS.Tests.Controllers
             Assert.AreEqual("Index", result.RouteValues["Action"]);
         }
 
-        /*
+        
         [TestMethod]
         public void EditIdParam()
         {
             var repMockPri = new Mock<IFakultetRepository<Prijavas>>();
-            var repMockStud = repMockPri.As<IFakultetRepository<Students>>();
-            var repMockIsp = repMockStud.As<IFakultetRepository<Ispits>>();
+            var repMockStud = new Mock<IFakultetRepository<Students>>();
+            var repMockIsp = new Mock<IFakultetRepository<Ispits>>();
 
             Students s1 = new Students() { BI = "10011", Ime = "Pera", Prezime = "Peric", Adresa = "Ulica1", Grad = "Grad1" };
             Students s2 = new Students() { BI = "20011", Ime = "Marko", Prezime = "Markovic", Adresa = "Ulica2", Grad = "Grad2" };
@@ -155,17 +155,41 @@ namespace Fakultet_IS.Tests.Controllers
             repMockStud.VerifyAll();
 
             Assert.AreEqual("Edit", result.ViewName);
-            Assert.AreEqual(sList.ElementAt(0).Text, s1.BI + " - " + s1.Ime + " " + s1.Prezime);
-            Assert.AreEqual(sList.ElementAt(1).Text, s2.BI + " - " + s2.Ime + " " + s2.Prezime);
-            Assert.AreEqual(iList.ElementAt(0).Value, 1);
-            Assert.AreEqual(iList.ElementAt(1).Value, 2);
+            Assert.AreEqual(sList.ElementAt(0).Value, "10011");
+            Assert.AreEqual(sList.ElementAt(1).Value, "20011");
+            Assert.AreEqual(iList.ElementAt(0).Value, 1+"");
+            Assert.AreEqual(iList.ElementAt(1).Value, 2+"");
         }
 
         [TestMethod]
         public void EditPrijavasParam()
         {
+            var repMockPri = new Mock<IFakultetRepository<Prijavas>>();
+            var repMockStud = new Mock<IFakultetRepository<Students>>();
+            var repMockIsp = new Mock<IFakultetRepository<Ispits>>();
 
-        }*/
+            Students s1 = new Students() { BI = "10011", Ime = "Pera", Prezime = "Peric", Adresa = "Ulica1", Grad = "Grad1" };
+            Students s2 = new Students() { BI = "20011", Ime = "Marko", Prezime = "Markovic", Adresa = "Ulica2", Grad = "Grad2" };
+            Ispits i1 = new Ispits() { IspitID = 1, Naziv = "Ispit1" };
+            Ispits i2 = new Ispits() { IspitID = 2, Naziv = "Ispit2" };
+            Prijavas prijavas = new Prijavas() { BI = "10011", IspitID = 1, Ocena = 8, Students = s1, Ispits = i1 };
+
+            repMockPri.Setup(x => x.UpdateEntity(prijavas));
+
+            controller = new PrijavasController(repMockPri.Object);
+            controller.SetIspitsRepository(repMockIsp.Object);
+            controller.SetStudentsRepository(repMockStud.Object);
+
+            var result = controller.Edit(prijavas);
+            var viewResult = result as ViewResult;
+            var rtaResult = result as RedirectToRouteResult;
+
+            repMockIsp.VerifyAll();
+            repMockPri.VerifyAll();
+            repMockStud.VerifyAll();
+
+            Assert.AreEqual("Index", rtaResult.RouteValues["Action"]);
+        }
 
         [TestMethod]
         public void DeleteIdParam()
