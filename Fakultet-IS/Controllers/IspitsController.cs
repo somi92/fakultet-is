@@ -15,6 +15,8 @@ namespace Fakultet_IS.Controllers
     public class IspitsController : Controller
     {
         private UnitOfWork unitOfWork;
+        private string errorBox = "<div id=\"error-box\" style=\"height=100px;"+
+            "border: 2px solid red; text-align: center; background-color: #FF8181;\">Operacije nije izvrsena, narusen je integritet baze podataka.</div>";
 
         public IspitsController()
         {
@@ -95,7 +97,7 @@ namespace Fakultet_IS.Controllers
                 }
                 catch (Exception e)
                 {
-                    TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+                    TempData["msg"] = errorBox;
                 }
                 return RedirectToAction("Index");
             }
@@ -135,7 +137,7 @@ namespace Fakultet_IS.Controllers
                 }
                 catch (Exception e)
                 {
-                    TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+                    TempData["msg"] = errorBox;
                 }
                 return RedirectToAction("Index");
             }
@@ -171,7 +173,7 @@ namespace Fakultet_IS.Controllers
             }
             catch (Exception e)
             {
-                TempData["msg"] = "<script>alert('Operacije nije izvrsena, narusen je integritet baze podataka.');</script>";
+                TempData["msg"] = errorBox;
             }
             return RedirectToAction("Index");
         }
