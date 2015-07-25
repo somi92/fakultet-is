@@ -57,7 +57,8 @@ namespace Fakultet_IS.Controllers
             {
                 students = students.Where(s => s.Prezime.Contains(search)
                                        || s.Ime.Contains(search)
-                                       || s.BI.Contains(search));
+                                       || s.BI.Contains(search)
+                                       || ((s.Ime+" "+s.Prezime).Contains(search)));
             }
 
             switch (sortOrder)
